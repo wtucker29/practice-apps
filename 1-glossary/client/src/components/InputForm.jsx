@@ -21,6 +21,7 @@ var InputForm = ({ onInputClick }) => {
   const handleInputClick = () => {
     // something
     onInputClick(inputWord, inputDef);
+    console.log(inputWord, inputDef);
   };
 
   return (
