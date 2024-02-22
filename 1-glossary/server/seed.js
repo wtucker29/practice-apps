@@ -1,3 +1,4 @@
+require("dotenv").config();
 const db = require('./db.js');
 const mongoose = require('mongoose');
 
@@ -30,7 +31,7 @@ const initialGlossary = [
 
 mongoose.connect(`mongodb://localhost/${process.env.DB_NAME}`, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    return db.Gloss.seed(initialGlossary);
+    return db.seed(initialGlossary);
   })
   .then(() => {
     mongoose.disconnect();
