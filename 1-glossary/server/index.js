@@ -17,11 +17,7 @@ app.use(express.static(path.join(__dirname, '..','client', 'dist')));
 // Other routes here
 
 app.post('/glossary', function(req, res) {
-  // Code here
-  // console.log('req.body: ', req.body);
-  // const { word, definition } = req.body;
-  // console.log('word from req.body: ', word);
-  // console.log('def from req.body: ', definition);
+
   db.save(req.body)
     .then(() => {
       return db.Gloss.find({});
@@ -36,7 +32,7 @@ app.post('/glossary', function(req, res) {
 });
 
 app.get('/glossary', function(req, res) {
-  // Code here
+
   db.Gloss.find({})
     .then((entries) => {
       res.status(200).send(entries);
@@ -44,7 +40,56 @@ app.get('/glossary', function(req, res) {
     .catch((error) => {
       console.error('Error retrivieving glossary entries:', error);
       res.status(500).send('Internal server error');
+    });
+});
+
+// app.get('/glossary/:word', function(req, res) {
+//   // something
+//   const searchedWord = req.params.word;
+//   console.log('searchedWord:', searchedWord);
+//   const searchQuery = { word: searchedWord }
+//   console.log('searchQuery: ', searchQuery);
+//   db.Gloss.find(searchQuery)
+//     .then((glossaryEntry) => {
+//       console.log(glossaryEntry);
+//       res.status(200).send(glossaryEntry);
+//     })
+//     .catch((error) => {
+//       console.error('Error retrieving searched word:', error);
+//       res.status(500).send('Internal server error');
+//     });
+// });
+
+app.put('/glossary/:word', function(req, res) {
+  // something
+  const wordToUpdate = req.params.word;
+  const updatedData = req.body;
+  db.Gloss.findOneAndUpdate({ word: wordToUpdate }, updatedData, { new: true })
+    .then((updatedGlossary) => {
+      return res.status(200).send(updatedGlossary);
     })
+    .catch((error) => {
+      console.error('Error updating glossary entry:', error);
+      res.status(500).send('Internal server error');
+    });
+});
+
+app.delete('/glossary', function(req, res) {
+
+  const deleteWord = req.body.word;
+  const deleteDef = req.body.definition;
+
+  db.Gloss.deleteOne({ word: deleteWord, definition: deleteDef })
+    .then(() => {
+      return db.Gloss.find({})
+    })
+    .then((updatedGlossary) => {
+      res.status(200).send(updatedGlossary);
+    })
+    .catch((error) => {
+      console.error('Error deleting glossary entry:', error);
+      res.status(500).send('Internal server error');
+    });
 });
 
 
