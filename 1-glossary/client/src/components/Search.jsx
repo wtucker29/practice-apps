@@ -1,7 +1,7 @@
 import React from 'react';
 const { useState } = React;
 
-var Search = ({ onSearchClick }) => {
+var Search = ({ onSearchClick, onResetClick }) => {
   const [query, setQuery] = useState('');
 
   const handleSearchChange = (event) => {
@@ -10,19 +10,27 @@ var Search = ({ onSearchClick }) => {
     setQuery(searchWord);
   }
 
-  const handleSearchClick = () => {
+  const handleSearchClick = (e) => {
     // something
+    e.preventDefault();
     onSearchClick(query);
+  }
+
+  const handleResetClick = () => {
+    onResetClick();
   }
 
   return (
     <div>
-      <form>
+      <form onSubmit={(e) => handleSearchClick(e)}>
         <input className="search-input" type="text" onChange={handleSearchChange} />
-        <button className="btn-search" onClick={handleSearchClick}>
+        <button type="submit" className="btn-search">
           <span className="search-span">Search</span>
         </button>
       </form>
+      <button className="btn-reset" onClick={handleResetClick}>
+        <span className="reset-span">Reset</span>
+      </button>
     </div>
   )
 }
