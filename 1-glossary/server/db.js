@@ -20,8 +20,15 @@ let save = (glossaryData) => {
   return new Gloss(glossaryData).save();
 }
 
+let seed = (initialGlossary) => {
+  return Promise.all(initialGlossary.map(item => {
+    return new Gloss(item).save();
+  }));
+}
+
 // 3. Export the models
 module.exports.Gloss = Gloss;
 module.exports.save = save;
+module.exports.seed = seed;
 
 // 4. Import the models into any modules that need them
