@@ -21,7 +21,7 @@ var Location = ({ onLocationClick }) => {
 
   const handleCityChange = (event) => {
     var cityInput = event.target.value;
-    setAdd1(cityInput);
+    setCity(cityInput);
   }
 
   const handleStateChange = (event) => {

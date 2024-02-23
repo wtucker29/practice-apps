@@ -8,6 +8,8 @@ var Summary = ({ totalSummary, onPurchaseClick }) => {
     onPurchaseClick(number);
   }
 
+  console.log('totalsummary: ', totalSummary);
+  // console.log('totalsummary.name: ', totalSummary[0].name);
 
   return (
     <div>

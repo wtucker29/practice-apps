@@ -10,15 +10,13 @@ const { useState, useEffect } = React;
 const App = () => {
 
   const [step, setStep] = useState(0);
-  const [accountInfo, setAccountInfo] = useState(null);
-  const [locationInfo, setLocationInfo] = useState(null);
-  const [paymentInfo, setPaymentInfo] = useState(null);
   const [summaryInfo, setSummaryInfo] = useState([]);
 
 
   useEffect(() => {
     // something
     setStep(0);
+    // setSummaryInfo([]);
   }, []);
 
 
@@ -45,7 +43,7 @@ const App = () => {
     const locationInfo = { addressline1: add1, addressline2: add2, city: city, state: state, zipcode: zip };
     axios.put('http://localhost:3000/checkout', locationInfo)
       .then((response) => {
-        console.log('Response from location update: ', response.data);
+        console.log('Response from location update: ', response);
         setStep(3);
       })
       .catch((error) => {
@@ -55,7 +53,7 @@ const App = () => {
 
   const handlePaymentClick = (cc, expiry, cvv, billingzip) => {
     // put request
-    const paymentInfo = { creditcardnumber: cc, expirydate: expiry, cvv: cvv, billingzipcode: billingzip };
+    const paymentInfo = { creditcardnumber: cc, expirydate: expiry, cvv: cvv, billingzip: billingzip };
     axios.put('http://localhost:3000/checkout', paymentInfo)
       .then((response) => {
         console.log('Response from payment update: ', response.data);
@@ -67,8 +65,10 @@ const App = () => {
       .then(() => {
         axios.get('http://localhost:3000/checkout')
         .then((response) => {
-          console.log(response.data);
-          setSummaryInfo(response.data);
+          // should hopefully be what I want
+          console.log('Response from get request: ', response.data[0]);
+          setSummaryInfo(response.data[0]);
+          console.log('Summary Info stored as state: ', summaryInfo);
         })
         .catch((error) => {
           console.error('Error retrieving all customer information:', error);
