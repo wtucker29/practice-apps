@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const cors = require('cors');
 const sessionHandler = require("./middleware/session-handler.js");
 const logger = require("./middleware/logger.js");
 
@@ -9,6 +10,7 @@ const { db, getInfo, postInfo, putInfo } = require("./db");
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 // Adds `req.session_id` based on the incoming cookie value.
 // Generates a new session if one does not exist.
@@ -37,6 +39,7 @@ app.get('/checkout', function(req, res) {
       res.status(500).send('Error retrieving checkout information');
       return;
     }
+    console.log('result in server get: ', result);
     res.status(200).send(result);
   })
 });

@@ -22,7 +22,7 @@ db.connectAsync()
   .then(() =>
     // Expand this table definition as needed:
     db.queryAsync(
-      "CREATE TABLE IF NOT EXISTS responses (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, sessionid VARCHAR(200) NOT NULL, name TEXT NOT NULL, email VARCHAR(50) NOT NULL, password VARCHAR(20) NOT NULL, addressline1 VARCHAR(50), addressline2 VARCHAR(50), city TEXT, state CHAR(2), zipcode INT(5), creditcardnumber BIGINT, expirydate VARCHAR(7), cvv INT, billingzip INT(5))"
+      "CREATE TABLE IF NOT EXISTS responses (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, sessionid VARCHAR(200) NOT NULL, name TEXT NOT NULL, email VARCHAR(50) NOT NULL, password VARCHAR(20) NOT NULL, addressline1 VARCHAR(50), addressline2 VARCHAR(50), city TEXT, state CHAR(2), zipcode BIGINT, creditcardnumber BIGINT, expirydate VARCHAR(7), cvv INT, billingzip BIGINT)"
     )
   )
   .catch((err) => console.log(err));
@@ -30,8 +30,9 @@ db.connectAsync()
 const getInfo = (sessionid, callback) => {
   const getInfoQuery = 'SELECT * FROM responses WHERE sessionid = ?';
   db.queryAsync(getInfoQuery, [sessionid])
-    .then(([row]) => {
-      callback(null, row);
+    .then((result) => {
+      console.log('result within getInfo: ', result[0]);
+      callback(null, result[0]);
     })
     .catch((error) => {
       callback(error, null);
